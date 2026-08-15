@@ -21,6 +21,7 @@ html, body {
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overscroll-behavior: none;
+  height: 100%;
   /* The viewport meta's user-scalable=no is unreliable on iOS (Safari ignores
      it for pinch-zoom since iOS 10, and inconsistently for double-tap-zoom
      too). touch-action is the actual fix: it tells the browser to treat taps
@@ -29,6 +30,17 @@ html, body {
      still works normally; #keyCanvas and .calib-handle override this with
      touch-action: none where they need to own the gesture for dragging. */
   touch-action: manipulation;
+}
+
+body {
+  /* Sticky footer: on short pages this pins the footer to the bottom of the
+     viewport instead of leaving it floating right under the content with
+     empty space below. On tall pages .layout's flex:1 still lets it grow
+     past one screen, so the footer scrolls away normally, it just never
+     sits any higher than the viewport bottom. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .hidden { display: none !important; }
@@ -80,6 +92,7 @@ html, body {
 }
 
 .layout {
+  flex: 1 0 auto;
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 16px;
