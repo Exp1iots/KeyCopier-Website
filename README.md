@@ -26,8 +26,7 @@ python3 -m http.server 8000
 
 then open `http://localhost:8000`.
 
-A `.claude/launch.json` is included for Claude Code's preview tooling, but the app itself has no
-framework or dependency requirements.
+No framework or dependencies — that's the whole setup.
 
 ## What's included
 
