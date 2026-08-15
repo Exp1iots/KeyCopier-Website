@@ -362,16 +362,63 @@ els.importFile.addEventListener("change", async () => {
   els.importFile.value = "";
 });
 
+// ---- clipboard ----
+// navigator.clipboard only exists in a secure context (https / localhost), so
+// fall back to a temporary selection, then to a prompt the user can copy from.
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // fall through — permission denied or unavailable
+    }
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    if (ok) return true;
+  } catch {
+    // fall through
+  }
+  // Last resort: show the value so it can be copied by hand. prompt() itself
+  // throws in sandboxed/embedded contexts, so it can't be the final word.
+  try {
+    window.prompt("Copy this:", text);
+  } catch {
+    toast(`Couldn't copy automatically: ${text}`);
+  }
+  return false;
+}
+
+// ---- copy bitting ----
+els.bittingReadout.addEventListener("click", async () => {
+  const code = state.depths.join("-");
+  const copied = await copyText(code);
+  if (!copied) return;
+  toast(`Copied ${code}`);
+  els.bittingReadout.classList.add("copied");
+  clearTimeout(els.bittingReadout._copyTimer);
+  els.bittingReadout._copyTimer = setTimeout(
+    () => els.bittingReadout.classList.remove("copied"),
+    900
+  );
+});
+
 // ---- share link ----
 els.shareBtn.addEventListener("click", async () => {
   const f = currentFormat();
   const url = new URL(window.location.href);
   url.hash = `m=${encodeURIComponent(f.manufacturer)}&f=${encodeURIComponent(f.formatName)}&d=${state.depths.join("-")}`;
-  try {
-    await navigator.clipboard.writeText(url.toString());
+  if (await copyText(url.toString())) {
     toast("Link copied");
-  } catch {
-    window.prompt("Copy this link:", url.toString());
   }
 });
 

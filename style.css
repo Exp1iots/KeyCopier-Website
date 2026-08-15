@@ -125,6 +125,30 @@ select, input[type="text"], input[type="number"] {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
+  /* a <button> for keyboard/AT support, styled as the plain readout it looks like */
+  font-family: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.bitting:hover {
+  background: var(--panel-2);
+  border-color: var(--border);
+}
+.bitting:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+.bitting.copied {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bitting { transition: none; }
 }
 
 .pin-stepper, .depth-stepper {
@@ -224,6 +248,16 @@ select, input[type="text"], input[type="number"] {
 }
 .modal-card h2 { margin: 0; font-size: 17px; }
 .modal-card p { margin: 0; color: var(--dim); font-size: 13px; line-height: 1.5; }
+
+.privacy-note {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.privacy-note b { color: var(--text); }
 
 .calib-box-wrap {
   /* NOT flex+justify-content:center — centering an overflowing flex child

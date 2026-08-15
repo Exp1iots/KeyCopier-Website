@@ -31,8 +31,9 @@
 
       <div class="field">
         <div class="row-between">
-          <label>Bitting</label>
-          <span id="bittingReadout" class="bitting"></span>
+          <label id="bittingLabel">Bitting</label>
+          <button id="bittingReadout" type="button" class="bitting" aria-labelledby="bittingLabel"
+                  title="Click to copy the bitting code"></button>
         </div>
       </div>
 
@@ -127,6 +128,12 @@
         <label for="saveNameInput">Name</label>
         <input id="saveNameInput" type="text" placeholder="e.g. Front door" maxlength="40" />
       </div>
+      <p class="privacy-note">
+        <span aria-hidden="true">🔒</span>
+        Saved on this device only, in this browser's local storage. Nothing is uploaded — there's no
+        server and no account. It won't sync to your other devices or browsers, and clearing your
+        browsing data will erase it, so use <b>Export all</b> in My keys to keep a backup.
+      </p>
       <div class="field-row">
         <button id="saveCancel" type="button" class="btn">Cancel</button>
         <button id="saveConfirm" type="button" class="btn btn-primary">Save</button>
