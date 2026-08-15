@@ -50,16 +50,42 @@ function toast(msg) {
   toast._t = setTimeout(() => els.toast.classList.add("hidden"), 1800);
 }
 
+// Countries listed first, in this order; any others found in the data are
+// appended after, alphabetically, so a new country never gets lost.
+const PRIORITY_COUNTRIES = ["Australia"];
+
 function populateManufacturers() {
-  const seen = new Set();
-  els.manufacturerSelect.innerHTML = "";
+  const countryOf = new Map(); // manufacturer -> country
+  const manufacturerOrder = []; // first-seen order, for stable within-group ordering
   KEY_FORMATS.forEach((f) => {
-    if (seen.has(f.manufacturer)) return;
-    seen.add(f.manufacturer);
-    const opt = document.createElement("option");
-    opt.value = f.manufacturer;
-    opt.textContent = f.manufacturer;
-    els.manufacturerSelect.appendChild(opt);
+    if (countryOf.has(f.manufacturer)) return;
+    countryOf.set(f.manufacturer, f.country);
+    manufacturerOrder.push(f.manufacturer);
+  });
+
+  const manufacturersByCountry = new Map();
+  manufacturerOrder.forEach((m) => {
+    const country = countryOf.get(m);
+    if (!manufacturersByCountry.has(country)) manufacturersByCountry.set(country, []);
+    manufacturersByCountry.get(country).push(m);
+  });
+
+  const remaining = [...manufacturersByCountry.keys()]
+    .filter((c) => !PRIORITY_COUNTRIES.includes(c))
+    .sort();
+  const countryOrder = [...PRIORITY_COUNTRIES.filter((c) => manufacturersByCountry.has(c)), ...remaining];
+
+  els.manufacturerSelect.innerHTML = "";
+  countryOrder.forEach((country) => {
+    const group = document.createElement("optgroup");
+    group.label = country;
+    manufacturersByCountry.get(country).forEach((m) => {
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      group.appendChild(opt);
+    });
+    els.manufacturerSelect.appendChild(group);
   });
 }
 
