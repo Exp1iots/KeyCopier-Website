@@ -381,12 +381,18 @@ select, input[type="text"], input[type="number"] {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  max-width: calc(100vw - 32px);
   background: var(--panel-2);
   border: 1px solid var(--border);
   color: var(--text);
   padding: 10px 16px;
   border-radius: 999px;
   font-size: 13px;
+  text-align: center;
   z-index: 30;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.toast.error {
+  border-color: var(--danger);
+  color: var(--danger);
 }

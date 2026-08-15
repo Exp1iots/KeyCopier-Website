@@ -43,11 +43,12 @@ function currentFormat() {
   return KEY_FORMATS[state.formatIndex];
 }
 
-function toast(msg) {
+function toast(msg, { variant = "info", duration = variant === "error" ? 3200 : 1800 } = {}) {
   els.toast.textContent = msg;
+  els.toast.classList.toggle("error", variant === "error");
   els.toast.classList.remove("hidden");
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => els.toast.classList.add("hidden"), 1800);
+  toast._t = setTimeout(() => els.toast.classList.add("hidden"), duration);
 }
 
 // Countries listed first, in this order; any others found in the data are
@@ -334,15 +335,23 @@ function renderKeysList() {
     row.querySelector(".load-btn").addEventListener("click", () => {
       const idx = KEY_FORMATS.findIndex((f) => f.manufacturer === item.manufacturer && f.formatName === item.formatName);
       if (idx === -1) {
-        toast("Format not found");
+        toast(`Can't load "${item.name}": its format no longer exists`, { variant: "error" });
         return;
       }
       setFormat(idx, { resetDepths: false });
-      state.depths = sanitizeDepths(currentFormat(), item.depths);
+      const sanitized = sanitizeDepths(currentFormat(), item.depths);
+      const wasInvalid = !Array.isArray(item.depths) ||
+        item.depths.length !== sanitized.length ||
+        item.depths.some((v, i) => v !== sanitized[i]);
+      state.depths = sanitized;
       state.selectedPin = 0;
       render();
       closeModal(els.keysModal);
-      toast(`Loaded "${item.name}"`);
+      if (wasInvalid) {
+        toast(`"${item.name}" had invalid saved data, so its depths were reset to safe values`, { variant: "error" });
+      } else {
+        toast(`Loaded "${item.name}"`);
+      }
     });
     row.querySelector(".delete-btn").addEventListener("click", () => {
       deleteKey(item.id);
