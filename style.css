@@ -21,6 +21,14 @@ html, body {
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overscroll-behavior: none;
+  /* The viewport meta's user-scalable=no is unreliable on iOS (Safari ignores
+     it for pinch-zoom since iOS 10, and inconsistently for double-tap-zoom
+     too). touch-action is the actual fix: it tells the browser to treat taps
+     as immediate clicks instead of waiting to see if a second tap arrives,
+     which is what removes the double-tap-zoom gesture. Panning/scrolling
+     still works normally; #keyCanvas and .calib-handle override this with
+     touch-action: none where they need to own the gesture for dragging. */
+  touch-action: manipulation;
 }
 
 .hidden { display: none !important; }
@@ -46,6 +54,7 @@ html, body {
   padding: 8px 14px;
   font-size: 13px;
   cursor: pointer;
+  touch-action: manipulation;
 }
 .pill:active { transform: scale(0.97); }
 
@@ -133,6 +142,7 @@ select, input[type="text"], input[type="number"] {
   border-radius: 8px;
   padding: 2px 8px;
   cursor: pointer;
+  touch-action: manipulation;
   transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .bitting:hover {
@@ -172,6 +182,9 @@ select, input[type="text"], input[type="number"] {
   font-size: 14px;
   cursor: pointer;
   text-align: center;
+  /* set explicitly, not just relying on the html/body default, since these are
+     exactly the small, closely-packed controls fast tapping would otherwise zoom */
+  touch-action: manipulation;
 }
 .btn:active { transform: scale(0.97); }
 .btn-big { flex: 1; padding: 16px; font-size: 15px; font-weight: 600; }
