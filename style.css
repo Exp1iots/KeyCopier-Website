@@ -105,6 +105,7 @@ html, body {
 
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.field-hint { margin: 0; color: var(--dim); font-size: 12px; line-height: 1.5; }
 .field-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }
 

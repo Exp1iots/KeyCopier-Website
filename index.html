@@ -75,7 +75,7 @@
           <option value="aud20">AU $20 note (144 × 65 mm)</option>
           <option value="aud1">AU $1 coin (25.0 mm diameter)</option>
           <option value="aud2">AU $2 coin (20.5 mm diameter)</option>
-          <option value="manual">I know my screen's px/inch</option>
+          <option value="manual">I already know my browser's px/inch</option>
         </select>
       </div>
 
@@ -89,6 +89,11 @@
       <div id="manualField" class="field hidden">
         <label for="manualPpi">Pixels per inch</label>
         <input id="manualPpi" type="number" min="20" max="1000" step="1" value="96" />
+        <p class="field-hint">
+          This is your browser's rendered pixel density, which shifts with zoom and OS display
+          scaling. It's not the resolution/PPI printed on your device's spec sheet: that number is
+          usually much higher and will make the contour the wrong size.
+        </p>
       </div>
 
       <div class="calib-readout">

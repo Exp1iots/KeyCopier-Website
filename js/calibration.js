@@ -15,6 +15,18 @@ function mmToIn(mm) {
   return mm / MM_PER_IN;
 }
 
+// A coin is easier to match precisely on a small touchscreen than a card
+// (the whole thing fits on screen at once, no scrolling needed to compare
+// both edges). hover:none + pointer:coarse is the standard touch-primary
+// signal (phones/tablets), unlike a narrow desktop window which still has
+// a mouse. Only picks the initial default; once the user changes it, that
+// choice sticks for the rest of the session same as before.
+function defaultReference() {
+  const touchPrimary = typeof window.matchMedia === "function" &&
+    window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  return touchPrimary ? "aud1" : "card";
+}
+
 // A CSS pixel is not a physical pixel: how many of them span a physical inch
 // depends on the browser's display scaling and the page zoom level. So a
 // calibration is only valid for the browser AND zoom level it was made at.
@@ -81,6 +93,8 @@ export function initCalibration({ onSave }) {
   const saveBtn = document.getElementById("calibSave");
   const openBtn = document.getElementById("calibrateBtn");
   const warnBtn = document.getElementById("calibWarningBtn");
+
+  refSelect.value = defaultReference();
 
   function currentRef() {
     return REF_OBJECTS[refSelect.value] || REF_OBJECTS.card;
