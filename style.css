@@ -201,9 +201,18 @@ select, input[type="text"], input[type="number"] {
   gap: 12px;
 }
 /* the calibration box is drawn at real physical size, which can easily exceed
-   a normal modal width — give it much more room than the other modals */
+   a normal modal width — a fixed cap (even a generous one) still forces
+   scrolling on realistic laptop windows for a wide object like a banknote,
+   which defeats the point (you need to see the whole thing at once to
+   compare it against the physical object). Use almost the entire viewport
+   instead, with minimal chrome padding, so it only needs to scroll when the
+   window genuinely can't fit the object at all (small phones, tiny windows). */
+#calibModal {
+  padding: 8px;
+}
 #calibModal .modal-card {
-  max-width: min(94vw, 800px);
+  max-width: 98vw;
+  padding: 14px;
 }
 .modal-card h2 { margin: 0; font-size: 17px; }
 .modal-card p { margin: 0; color: var(--dim); font-size: 13px; line-height: 1.5; }
