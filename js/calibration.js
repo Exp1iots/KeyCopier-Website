@@ -15,10 +15,46 @@ function mmToIn(mm) {
   return mm / MM_PER_IN;
 }
 
-export function getSavedPpi() {
+// A CSS pixel is not a physical pixel: how many of them span a physical inch
+// depends on the browser's display scaling and the page zoom level. So a
+// calibration is only valid for the browser AND zoom level it was made at.
+// We record devicePixelRatio alongside the value and rescale if it changes,
+// which keeps the contour true to size across zoom changes (Ctrl +/-) rather
+// than silently drifting. Calibration is stored per-origin per-browser, so
+// each browser legitimately holds its own different-looking px/inch figure.
+function readStored() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  const n = raw ? parseFloat(raw) : NaN;
-  return Number.isFinite(n) && n > 0 ? n : null;
+  if (!raw) return null;
+
+  // legacy format: a bare number with no recorded devicePixelRatio
+  if (!raw.startsWith("{")) {
+    const n = parseFloat(raw);
+    return Number.isFinite(n) && n > 0 ? { ppi: n, dpr: null } : null;
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    const ppi = parseFloat(parsed.ppi);
+    const dpr = parseFloat(parsed.dpr);
+    if (!Number.isFinite(ppi) || ppi <= 0) return null;
+    return { ppi, dpr: Number.isFinite(dpr) && dpr > 0 ? dpr : null };
+  } catch {
+    return null;
+  }
+}
+
+export function getSavedPpi() {
+  const stored = readStored();
+  if (!stored) return null;
+  // Physical pixels per inch is fixed by the hardware; CSS px per inch scales
+  // inversely with devicePixelRatio, so correct by the ratio of the two.
+  if (stored.dpr && window.devicePixelRatio > 0) {
+    return stored.ppi * (stored.dpr / window.devicePixelRatio);
+  }
+  return stored.ppi;
+}
+
+export function savePpi(ppi) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ppi, dpr: window.devicePixelRatio || 1 }));
 }
 
 export function getPpi() {
@@ -166,7 +202,7 @@ export function initCalibration({ onSave }) {
   saveBtn.addEventListener("click", () => {
     const ppi = refSelect.value === "manual" ? parseFloat(manualPpi.value) : boxWidthPx / currentAspect().wIn;
     if (Number.isFinite(ppi) && ppi > 0) {
-      localStorage.setItem(STORAGE_KEY, String(ppi));
+      savePpi(ppi);
       close();
       onSave && onSave(ppi);
     }

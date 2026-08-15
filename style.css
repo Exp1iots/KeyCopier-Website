@@ -200,19 +200,27 @@ select, input[type="text"], input[type="number"] {
   flex-direction: column;
   gap: 12px;
 }
-/* the calibration box is drawn at real physical size, which can easily exceed
-   a normal modal width — a fixed cap (even a generous one) still forces
-   scrolling on realistic laptop windows for a wide object like a banknote,
-   which defeats the point (you need to see the whole thing at once to
-   compare it against the physical object). Use almost the entire viewport
-   instead, with minimal chrome padding, so it only needs to scroll when the
-   window genuinely can't fit the object at all (small phones, tiny windows). */
+/* The calibration box is drawn at real physical size, so the modal has to be
+   sized by its CONTENT, not by the viewport: a fixed cap forces scrolling for
+   a wide object like a banknote, but sizing to the viewport (98vw) stretches
+   the dialog absurdly wide on a large monitor. fit-content hugs whichever is
+   wider — the box or the prose — and only then clamps to the viewport. */
 #calibModal {
   padding: 8px;
 }
 #calibModal .modal-card {
+  width: fit-content;
   max-width: 98vw;
-  padding: 14px;
+  padding: 14px 18px;
+}
+/* Without this the single-line max-content width of the prose would drive the
+   whole dialog wide; capping it lets the text wrap so the box governs size. */
+#calibModal .modal-card > h2,
+#calibModal .modal-card > p,
+#calibModal .modal-card > .field,
+#calibModal .modal-card > .calib-readout,
+#calibModal .modal-card > .calib-size-readout {
+  max-width: 62ch;
 }
 .modal-card h2 { margin: 0; font-size: 17px; }
 .modal-card p { margin: 0; color: var(--dim); font-size: 13px; line-height: 1.5; }
@@ -224,7 +232,9 @@ select, input[type="text"], input[type="number"] {
      directions once the box is wider than the wrap. */
   overflow-x: auto;
   overflow-y: visible;
-  padding: 20px 0;
+  /* horizontal padding leaves room for the resize handle, which sits ~12px
+     outside the box's corner and would otherwise trigger a scrollbar */
+  padding: 20px 14px;
 }
 .calib-box {
   position: relative;

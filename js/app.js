@@ -254,6 +254,9 @@ initCalibration({
 updateCalibWarning();
 
 window.addEventListener("resize", () => {
+  // Page zoom fires resize and changes devicePixelRatio, which changes how many
+  // CSS px span a physical inch — re-read so the contour stays true to size.
+  state.ppi = getPpi();
   resizeCanvas();
   render();
 });
