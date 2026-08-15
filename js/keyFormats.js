@@ -1,4 +1,4 @@
-// Ported from zinongli/KeyCopier (key_formats.c) — all lengths in inches, angle in degrees.
+// Ported from zinongli/KeyCopier (key_formats.c); all lengths in inches, angle in degrees.
 // sides: 1 = single-sided cuts, 2 = double-sided (same depth cut into both edges of the blade)
 // stop: 1 = shoulder-stop key, 2 = tip-stop key (drawn with a wall at the tip instead)
 // country: where the format/manufacturer originates, used to group the manufacturer picker

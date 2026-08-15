@@ -1,4 +1,4 @@
-// Contour renderer — ported geometry from key_copier.c's key_copier_view_measure_draw_callback,
+// Contour renderer, ported geometry from key_copier.c's key_copier_view_measure_draw_callback,
 // generalized from the Flipper's fixed 128x64/inches-per-px screen to an arbitrary calibrated
 // px-per-inch scale, with floating point coordinates instead of integer rounding.
 
@@ -156,7 +156,7 @@ export function draw(ctx, format, depths, opts) {
 
   ctx.clearRect(0, 0, layout.width, layout.height);
 
-  // reference edge — butt the key's shoulder up against this line
+  // reference edge: butt the key's shoulder up against this line
   ctx.strokeStyle = dimColor;
   ctx.lineWidth = 1;
   ctx.setLineDash([3, 3]);

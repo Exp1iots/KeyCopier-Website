@@ -228,7 +228,7 @@ select, input[type="text"], input[type="number"] {
    sized by its CONTENT, not by the viewport: a fixed cap forces scrolling for
    a wide object like a banknote, but sizing to the viewport (98vw) stretches
    the dialog absurdly wide on a large monitor. fit-content hugs whichever is
-   wider — the box or the prose — and only then clamps to the viewport. */
+   wider (the box or the prose), and only then clamps to the viewport. */
 #calibModal {
   padding: 8px;
 }
@@ -260,7 +260,7 @@ select, input[type="text"], input[type="number"] {
 .privacy-note b { color: var(--text); }
 
 .calib-box-wrap {
-  /* NOT flex+justify-content:center — centering an overflowing flex child
+  /* NOT flex+justify-content:center: centering an overflowing flex child
      clips the overflow on the start side instead of letting you scroll to
      it. Plain block layout with auto margins scrolls correctly in both
      directions once the box is wider than the wrap. */

@@ -283,7 +283,7 @@ updateCalibWarning();
 
 window.addEventListener("resize", () => {
   // Page zoom fires resize and changes devicePixelRatio, which changes how many
-  // CSS px span a physical inch — re-read so the contour stays true to size.
+  // CSS px span a physical inch, so re-read here to keep the contour true to size.
   state.ppi = getPpi();
   resizeCanvas();
   render();
@@ -399,7 +399,7 @@ async function copyText(text) {
       await navigator.clipboard.writeText(text);
       return true;
     } catch {
-      // fall through — permission denied or unavailable
+      // fall through: permission denied or unavailable
     }
   }
   try {

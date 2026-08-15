@@ -13,7 +13,7 @@
   </header>
 
   <div id="calibWarning" class="banner hidden">
-    Screen isn't calibrated yet — cuts won't be true to size. <button id="calibWarningBtn" type="button">Calibrate now</button>
+    Screen isn't calibrated yet, so cuts won't be true to size. <button id="calibWarningBtn" type="button">Calibrate now</button>
   </div>
 
   <main class="layout">
@@ -56,7 +56,7 @@
 
     <section class="stage">
       <p class="instructions">
-        1. Lay your phone/tablet flat, screen up. 2. Place the key on top and slide its shoulder to the dashed line. 3. Adjust each pin below until the notches match the key — closing one eye kills the parallax.
+        1. Lay your phone/tablet flat, screen up. 2. Place the key on top and slide its shoulder to the dashed line. 3. Adjust each pin below until the notches match the key. Closing one eye kills the parallax.
       </p>
       <div class="canvas-wrap">
         <canvas id="keyCanvas"></canvas>
@@ -67,7 +67,7 @@
   <div id="calibModal" class="modal hidden">
     <div class="modal-card">
       <h2>Calibrate your screen</h2>
-      <p>Pick a reference object you have on hand, then resize the box (drag the corner, or use +/-) until it exactly matches it. Calibration is saved per browser, so the px/inch figure will differ between browsers — that's normal, and each one is correct for itself.</p>
+      <p>Pick a reference object you have on hand, then resize the box (drag the corner, or use +/-) until it exactly matches it. Calibration is saved per browser, so the px/inch figure will differ between browsers. That's normal, and each one is correct for itself.</p>
       <div class="field">
         <label for="refObject">Reference object</label>
         <select id="refObject">
@@ -92,7 +92,7 @@
       </div>
 
       <div class="calib-readout">
-        <span id="ppiReadout">— px/inch</span>
+        <span id="ppiReadout">px/inch</span>
         <div class="nudge">
           <button id="nudgeDown" type="button" class="btn">−</button>
           <button id="nudgeUp" type="button" class="btn">+</button>
@@ -130,7 +130,7 @@
       </div>
       <p class="privacy-note">
         <span aria-hidden="true">🔒</span>
-        Saved on this device only, in this browser's local storage. Nothing is uploaded — there's no
+        Saved on this device only, in this browser's local storage. Nothing is uploaded: there's no
         server and no account. It won't sync to your other devices or browsers, and clearing your
         browsing data will erase it, so use <b>Export all</b> in My keys to keep a backup.
       </p>
