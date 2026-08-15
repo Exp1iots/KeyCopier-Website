@@ -92,6 +92,24 @@ html, body {
   .layout { grid-template-columns: 1fr; }
 }
 
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 16px 24px;
+  color: var(--dim);
+  font-size: 12px;
+  text-align: center;
+}
+.site-footer a {
+  color: var(--dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--accent-2);
+}
+
 .controls {
   background: var(--panel);
   border: 1px solid var(--border);
