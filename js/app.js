@@ -1,5 +1,5 @@
 import { KEY_FORMATS } from "./keyFormats.js";
-import { draw, computeLayout, nearestPin, setPinDepth, defaultDepths, depthIndexFromTopY, depthIndexFromBottomY } from "./renderer.js";
+import { draw, computeLayout, nearestPin, setPinDepth, defaultDepths, sanitizeDepths, depthIndexFromTopY, depthIndexFromBottomY } from "./renderer.js";
 import { getPpi, isCalibrated, initCalibration } from "./calibration.js";
 import { listSavedKeys, saveKey, deleteKey, exportAllAsJson, importFromJson } from "./storage.js";
 
@@ -338,8 +338,7 @@ function renderKeysList() {
         return;
       }
       setFormat(idx, { resetDepths: false });
-      state.depths = item.depths.slice(0, currentFormat().pinNum);
-      while (state.depths.length < currentFormat().pinNum) state.depths.push(currentFormat().minDepthInd);
+      state.depths = sanitizeDepths(currentFormat(), item.depths);
       state.selectedPin = 0;
       render();
       closeModal(els.keysModal);
@@ -462,9 +461,7 @@ function loadFromHash() {
   setFormat(idx, { resetDepths: false });
   const f = currentFormat();
   const depths = d.split("-").map((n) => parseInt(n, 10));
-  state.depths = f.pinNum === depths.length && depths.every(Number.isFinite)
-    ? depths.map((v) => Math.min(f.maxDepthInd, Math.max(f.minDepthInd, v)))
-    : defaultDepths(f);
+  state.depths = sanitizeDepths(f, depths);
   state.selectedPin = 0;
   render();
   return true;

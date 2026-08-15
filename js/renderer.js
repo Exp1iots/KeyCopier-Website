@@ -56,6 +56,18 @@ export function defaultDepths(format) {
   return new Array(format.pinNum).fill(format.minDepthInd);
 }
 
+// Depths can reach app state from outside the app's own controls: a share
+// link, a saved key loaded from localStorage (hand-edited via devtools, or
+// just corrupted), or an imported JSON file. None of those are trustworthy —
+// a wildly out-of-range depth (e.g. -10) breaks the notch pixel math and
+// draws garbage geometry instead of failing loudly. This is the one gate
+// every such entry point should go through before touching state.depths.
+export function sanitizeDepths(format, depths) {
+  if (!Array.isArray(depths) || depths.length !== format.pinNum) return defaultDepths(format);
+  if (!depths.every((v) => Number.isFinite(v))) return defaultDepths(format);
+  return depths.map((v) => Math.min(format.maxDepthInd, Math.max(format.minDepthInd, Math.round(v))));
+}
+
 // y -> depth index for the top edge (used for pointer/drag hit-testing)
 export function depthIndexFromTopY(format, pxPerInch, layout, y) {
   const px = y - layout.topEdgeY;
