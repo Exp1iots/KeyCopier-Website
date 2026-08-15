@@ -1,5 +1,7 @@
 # Key Copier (Web)
 
+**Live:** [keycopier.tech-zone.cc](https://keycopier.tech-zone.cc/)
+
 A browser port of [zinongli/KeyCopier](https://github.com/zinongli/KeyCopier), a Flipper Zero app
 for reading a key's bitting depths by eye. Lay a physical key on the screen, line it up with the
 on-screen contour, and nudge each pin's depth until the notches match the key.
