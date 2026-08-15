@@ -54,6 +54,8 @@ function toast(msg) {
 // appended after, alphabetically, so a new country never gets lost.
 const PRIORITY_COUNTRIES = ["Australia"];
 
+const DEFAULT_MANUFACTURER = "Lockwood";
+
 function populateManufacturers() {
   const countryOf = new Map(); // manufacturer -> country
   const manufacturerOrder = []; // first-seen order, for stable within-group ordering
@@ -471,5 +473,6 @@ function loadFromHash() {
 // ---- init ----
 populateManufacturers();
 if (!loadFromHash()) {
-  setFormat(0);
+  const defaultIndex = KEY_FORMATS.findIndex((f) => f.manufacturer === DEFAULT_MANUFACTURER);
+  setFormat(defaultIndex >= 0 ? defaultIndex : 0);
 }
